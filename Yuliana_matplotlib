@@ -1,0 +1,94 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import random
+
+# Crear Vector
+vector = np.random.randn(720)
+print (f"Vector:{vector}\n")
+
+# Reshape
+matriz_reshape= vector.reshape(120,6)
+
+print(f" Reshape:{matriz_reshape}\n")
+
+# Transpuesta de la matriz
+matriz_transpuesta= matriz_reshape.T
+print(f"Trnspuesta:{matriz_transpuesta}\n")
+
+# Copias:
+# Usando order F
+copia_order_f=np.array(matriz_transpuesta,order="F", copy=True)
+print(f"Copia order F: {copia_order_f}\n")
+
+# Usando order C
+copia_order_c=np.array(matriz_transpuesta,order="C", copy=True)
+print(f"Copia order C: {copia_order_c}\n")
+
+# Subplot
+fig = plt.figure(figsize=(8, 16)) # Se creo una figura
+# Paneles "a mano"
+ax1 = fig.add_axes([0.05, 0.55, 0.25, 0.35]) # Panel de arriba izquierda
+ax2 = fig.add_axes([0.37, 0.55, 0.25, 0.35]) # Panel de arriba centro
+ax3 = fig.add_axes([0.69, 0.55, 0.25, 0.35]) # Panel de arriba derecha
+ax4 = fig.add_axes([0.05, 0.05, 0.25, 0.35]) # Panel de abajo izquierda
+ax5 = fig.add_axes([0.37, 0.05, 0.25, 0.35]) # Panel de abajo centro
+ax6 = fig.add_axes([0.65, 0.05, 0.3, 0.2]) #Panel de abajo derecha
+
+# Graficas para cada panel:
+# Panel 1
+x = np.arange(matriz_transpuesta.shape[1])  # eje X de 0 a 119
+for fila in matriz_transpuesta:
+    ax1.plot(x, fila)   # dibuja cada fila como una curva
+ax1.set_title("Panel 1: Plot de las 6 filas")
+
+ax1.plot(x, matriz_transpuesta[0], label="Fila 1", color="purple")
+ax1.set_title("Plot - Fila 1") # Titulo del panel
+ax1.set_xlabel("Índice") # Etiqueta del eje X
+ax1.set_ylabel("Valor") # Etiqueta del Y
+ax1.legend()
+ax1.grid(True, linestyle="--", alpha=0.7) # Cuadricula
+
+# Panel 2
+ax2.scatter(x, matriz_transpuesta[1], label="Fila 2", color="red")
+ax2.set_title("Scatter - Fila 2")
+ax2.set_xlabel("Índice")
+ax2.set_ylabel("Valor")
+ax2.legend()
+ax2.grid(True, linestyle=":")
+
+# Panel 3
+ax3.bar(x[:20], matriz_transpuesta[2][:20], label="Fila 3", color="blue")
+ax3.set_title("Bar - Fila 3")
+ax3.set_xlabel("Índice")
+ax3.set_ylabel("Valor")
+ax3.legend()
+ax3.grid(True, alpha=0.5)
+
+# Panel 4
+ax4.hist(matriz_transpuesta[3], bins=15, color="orange", label="Fila 4")
+ax4.set_title("Histograma - Fila 4")
+ax4.set_xlabel("Valor")
+ax4.set_ylabel("Frecuencia")
+ax4.legend()
+ax4.grid(True, alpha=0.5)
+
+# Panel 5
+datos_pie = np.abs(matriz_transpuesta[4][:6])
+ax5.pie(datos_pie, labels=[f"D{i}" for i in range(1,7)], autopct="%1.1f%%")
+ax5.set_title("Pie - Fila 5")
+
+# Panel 6
+x = np.arange(matriz_transpuesta.shape[1]) # Eje X = 0..119
+y = matriz_transpuesta[5] # Fila 6
+errores = np.random.rand(len(x)) * 0.5 # Errores aleatorios
+
+ax6.errorbar(x, y, yerr=errores, fmt='g--o',
+             ecolor='red', capsize=3, label="Fila 6 con error")
+
+ax6.set_title("Errorbar - Fila 6")
+ax6.set_xlabel("Índice")
+ax6.set_ylabel("Valor")
+ax6.legend()
+ax6.grid(True, linestyle="--", alpha=0.7)
+
+plt.show()
